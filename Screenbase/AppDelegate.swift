@@ -8,6 +8,7 @@
 
 import UIKit
 import Iconic
+import SQLite
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -17,8 +18,69 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         Iconic.registerFontAwesomeIcon()
+        setupDB()
         
         return true
+    }
+    
+    func setupDB() {
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        
+        do {
+            let db = try Connection("\(path)/db.sqlite3")
+            try createLikeDislikeTable(db)
+            try createFavTable(db)
+            
+            
+        } catch {
+            print("db creation failed")
+        }
+    }
+    
+    func createLikeDislikeTable(_ db: Connection) throws {
+        let likeDislikeTable = Table("like_dislike")
+        let default_row = Expression<Int64>("default_row")
+        let song_id = Expression<Int64>("song_id")
+        let like_or_dislike = Expression<String>("like_or_dislike")
+        
+        try db.run(likeDislikeTable.create { t in
+            t.column(default_row, primaryKey: true)
+            t.column(song_id, unique: true)
+            t.column(like_or_dislike)
+        })
+    }
+    
+    func createFavTable(_ db: Connection) throws {
+        let favTable = Table("fav")
+        let default_row = Expression<Int64>("default_row")
+        let song_id = Expression<Int64>("song_id")
+        let song_like = Expression<Int64>("song_like")
+        let song_dislike = Expression<Int64>("song_dislike")
+        let song_highest_score = Expression<Int64>("song_highest_score")
+        let song_type = Expression<String>("song_type")
+        let song_name = Expression<String>("song_name")
+        let anime_game_name = Expression<String>("anime_game_name")
+        let song_artist = Expression<String>("song_artist")
+        let song_by = Expression<String>("song_by")
+        let song_url = Expression<String>("song_url")
+        let song_date = Expression<String>("song_date")
+        
+        try db.run(favTable.create { t in
+            t.column(default_row, primaryKey: true)
+            t.column(song_id, unique: true)
+            t.column(song_like)
+            t.column(song_dislike)
+            t.column(song_highest_score)
+            t.column(song_type)
+            t.column(song_name)
+            t.column(anime_game_name)
+            t.column(song_artist)
+            t.column(song_by)
+            t.column(song_url)
+            t.column(song_date)
+        })
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

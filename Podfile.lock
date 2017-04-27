@@ -1,18 +1,23 @@
 PODS:
   - Iconic (1.3)
-  - SideMenu (2.3.0)
+  - SideMenu (2.3.1)
+  - SQLite.swift (0.11.3):
+    - SQLite.swift/standard (= 0.11.3)
+  - SQLite.swift/standard (0.11.3)
   - TNSlider (0.2.0)
 
 DEPENDENCIES:
   - Iconic
   - SideMenu
+  - SQLite.swift (~> 0.11.3)
   - TNSlider
 
 SPEC CHECKSUMS:
   Iconic: 5bff125cf3bb6e3f2dd79c31016e0bd9856716a6
-  SideMenu: 43d092cf615cf472f105c5b9867a21beff9fc269
+  SideMenu: 2a3c3da0b3d5f78a047b2271bb7398260fcd7e3d
+  SQLite.swift: 99b36c22084427f0abbeb957556ce1528cf10bb3
   TNSlider: 38ddff960eaad75538a904be401d4d7d61334653
 
-PODFILE CHECKSUM: e0207cb0729387c41a6c8d3c189f23a90c129b26
+PODFILE CHECKSUM: a448f062787645309927b770273fd1a07f46b714
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1

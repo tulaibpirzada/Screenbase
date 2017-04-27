@@ -90,11 +90,13 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Iconic/Iconic.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SQLite.swift/SQLite.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SideMenu/SideMenu.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TNSlider/TNSlider.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Iconic/Iconic.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SQLite.swift/SQLite.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SideMenu/SideMenu.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TNSlider/TNSlider.framework"
 fi

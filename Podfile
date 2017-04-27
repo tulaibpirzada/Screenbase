@@ -7,6 +7,7 @@ target 'Screenbase' do
 pod 'SideMenu'
 pod 'Iconic'
 pod 'TNSlider'
+pod 'SQLite.swift', '~> 0.11.3'
   # Pods for Screenbase
 
 end
