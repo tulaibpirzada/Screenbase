@@ -8,6 +8,7 @@ pod 'SideMenu'
 pod 'Iconic'
 pod 'TNSlider'
 pod 'SQLite.swift', '~> 0.11.3'
+pod 'Alamofire', '~> 4.4'
   # Pods for Screenbase
 
 end

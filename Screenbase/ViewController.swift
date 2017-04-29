@@ -50,6 +50,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupDB()
         loadData()
+        ServerController.shared.downloadFile()
         //Iconic.registerFontAwesomeIcon()
         
         
@@ -225,6 +226,7 @@ class ViewController: UIViewController {
             removeLikeDislikeData()
             insertLikeDislikeData(likeDislike: "DISLIKE")
             loadLikeDislikeTableData()
+            ServerController.shared.postLikeDislike(2789, like_or_dislike: "DISLIKE")
         }
     }
     
@@ -233,6 +235,7 @@ class ViewController: UIViewController {
             removeLikeDislikeData()
             insertLikeDislikeData(likeDislike: "LIKE")
             loadLikeDislikeTableData()
+            ServerController.shared.postLikeDislike(2789, like_or_dislike: "LIKE")
         }
     }
 
