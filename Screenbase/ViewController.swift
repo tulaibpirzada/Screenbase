@@ -44,6 +44,7 @@ class ViewController: UIViewController {
     let like_or_dislike = Expression<String>("like_or_dislike")
     
     var isDataPresentInFavTable = false
+    var isDataPresentInLikeDislikeTable = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,15 +70,42 @@ class ViewController: UIViewController {
     }
     
     func loadData() {
+        loadLikeDislikeTableData()
+        loadFavTableData()
+    }
+    
+    func loadLikeDislikeTableData() {
+        do {
+            isDataPresentInLikeDislikeTable = false
+            for song in try db.prepare(likeDislikeTable) {
+                isDataPresentInLikeDislikeTable = true
+                if song[like_or_dislike] == "LIKE" {
+                    likeButton.setIconImage(withIcon: FontAwesomeIcon._334Icon, size: CGSize(width: 25, height: 25), color: .white, forState: [])
+                    dislikeButton.setIconImage(withIcon: FontAwesomeIcon.thumbsDownAltIcon, size: CGSize(width: 25, height: 25), color: .white, forState: [])
+                } else if song[like_or_dislike] == "DISLIKE" {
+                    likeButton.setIconImage(withIcon: FontAwesomeIcon.thumbsUpAltIcon, size: CGSize(width: 25, height: 25), color: .white, forState: [])
+                    dislikeButton.setIconImage(withIcon: FontAwesomeIcon._335Icon, size: CGSize(width: 25, height: 25), color: .white, forState: [])
+                }
+            }
+            
+            if !isDataPresentInLikeDislikeTable {
+                likeButton.setIconImage(withIcon: FontAwesomeIcon.thumbsUpAltIcon, size: CGSize(width: 25, height: 25), color: .white, forState: [])
+                dislikeButton.setIconImage(withIcon: FontAwesomeIcon.thumbsDownAltIcon, size: CGSize(width: 25, height: 25), color: .white, forState: [])
+            }
+        } catch {
+            print("ERROR")
+        }
+    }
+    
+    func loadFavTableData() {
         do {
             isDataPresentInFavTable = false
             for favSong in try db.prepare(favTable) {
-                print("id: \(favSong[id]), name: \(favSong[song_name]), song_id: \(favSong[song_id])")
                 isDataPresentInFavTable = true
                 songNameLabel.text = favSong[song_name]
                 animeGameNameLabel.text = favSong[anime_game_name]
                 songArtistLabel.text = favSong[song_artist]
-                favoriteButton.setIconImage(withIcon: FontAwesomeIcon.heartIcon, size: CGSize(width: 25, height: 25), color: nil, forState: .normal)
+                favoriteButton.setIconImage(withIcon: FontAwesomeIcon.heartIcon, size: CGSize(width: 25, height: 25), color: .white, forState: .normal)
             }
             
             if !isDataPresentInFavTable {
@@ -91,7 +119,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func insertData() {
+    func insertFavData() {
         let insert = favTable.insert(song_id <- 2789, song_type <- "song_type",
                                   song_name <- "song_name", anime_game_name <- "anime_game_name",
                                   song_artist <- "song_artist", song_by <- "song_by",
@@ -105,10 +133,28 @@ class ViewController: UIViewController {
         }
     }
     
-    func removeData() {
+    func insertLikeDislikeData(likeDislike: String) {
+        let insert = likeDislikeTable.insert(song_id <- 2789, like_or_dislike <- likeDislike)
+        do {
+            let _ = try db.run(insert)
+        } catch {
+            print("Error during inserting data")
+        }
+    }
+    
+    func removeFavData() {
         let favSong = favTable.filter(id == 1)
         do {
             let _ = try db.run(favSong.delete())
+        } catch {
+            print("Error during deleting data")
+        }
+    }
+    
+    func removeLikeDislikeData() {
+        let song = likeDislikeTable.filter(id == 1)
+        do {
+            let _ = try db.run(song.delete())
         } catch {
             print("Error during deleting data")
         }
@@ -164,21 +210,30 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     @IBAction func favoriteButtonTapped() {
         if isDataPresentInFavTable {
-            removeData()
+            removeFavData()
         } else {
-            insertData()
+            insertFavData()
         }
-        loadData()
+        loadFavTableData()
     }
 
     @IBAction func dislikeButtonTapped() {
-        
+        if !isDataPresentInLikeDislikeTable {
+            removeLikeDislikeData()
+            insertLikeDislikeData(likeDislike: "DISLIKE")
+            loadLikeDislikeTableData()
+        }
     }
     
     @IBAction func likeButtonTapped() {
-        
+        if !isDataPresentInLikeDislikeTable {
+            removeLikeDislikeData()
+            insertLikeDislikeData(likeDislike: "LIKE")
+            loadLikeDislikeTableData()
+        }
     }
 
 }
