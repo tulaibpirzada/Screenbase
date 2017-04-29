@@ -38,7 +38,7 @@ class ServerController {
         }
     }
     
-    func postLikeDislike(_ song_id: Int, like_or_dislike: String) {
+    func postLikeDislike(_ song_id: Int64, like_or_dislike: String) {
         let parameters: Parameters = [
             "song_id": song_id,
             "like_or_dislike": like_or_dislike,
